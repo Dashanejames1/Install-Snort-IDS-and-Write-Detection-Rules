@@ -3,6 +3,7 @@
 
 **Author:** Dashane James  
 **Lab Environment:** VMware Workstation | Kali Linux | Metasploitable 2
+
 **Purpose:** [The goal of this repository is to install Snort and write a custom rule to detect Nmap scans.]
 **Status:** 🔵 Completed
 
