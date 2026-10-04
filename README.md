@@ -65,24 +65,34 @@ For this task ...
 
 # Output
 
+Snort 3.12.2.0 captured 273 packets on eth0 over 2 minutes 26 seconds with zero drops. 255 packets (93.4%) were ICMP, matching the ping test from Kali to 192.168.79.130. The remaining traffic was ARP (16) and UDP (2) background noise. This confirms Snort is seeing traffic on the lab interface and is ready for detection rules.
+
 <img width="323" height="255" alt="Screenshot 2026-09-29 223543" src="https://github.com/user-attachments/assets/16bc749e-2bfd-4e87-b508-7a3769f381a4" />
 
-installing snort
+*Installing snort 3.12.2.0 on Kali via apt.*
 
 <img width="325" height="52" alt="Screenshot 2026-09-29 225951" src="https://github.com/user-attachments/assets/77bdd274-cc89-425e-a09e-c0bb780c92c4" />
 
-attempting to run in packet sniffer mode failed.
+*First attempt to run in packet sniffer mode failed. (-A console is Snort 2 Syntax; Snort 3 uses -A alert_fast instead,.)*
+
 
 <img width="652" height="254" alt="Screenshot 2026-09-29 231007" src="https://github.com/user-attachments/assets/9092b1ed-09aa-4144-b759-5864d23460f8" />
 
-Replacement command to run in packet sniffer. Ping also shown on the right terminal
+*Snort listening on eth0 (left) while pinging the metasploitable 2 target at 192.168.79.130. (right)*
+
+
+<img width="324" height="256" alt="Screenshot 2026-09-29 231040" src="https://github.com/user-attachments/assets/3ec303bb-7eaa-45e6-ad26-c30d5c7dcad5" />
+
+Packet statistics after stopping Snort. 273 packets captured with 0 drops; 255(93.4%) were ICMP  from the Ping test. (1/2)
+
+<img width="323" height="177" alt="Screenshot 2026-09-29 231110" src="https://github.com/user-attachments/assets/3181f229-183b-4579-b966-453dc1124508" />
+
+Packet statistics after stopping Snort. 273 packets captured with 0 drops; 255(93.4%) were ICMP  from the Ping test. (2/2)
 
 
 
-**Findings:**
-1
 
-### 2. [.]
+### 2. [Write a rule to detect ICMP from metasploitable to kali.]
 []
 
 # Command used
@@ -95,7 +105,7 @@ Replacement command to run in packet sniffer. Ping also shown on the right termi
 
 **Findings:**
 0
-### 3. []
+### 3. [Test by pinging from Metasploitable and watching Snort alert.]
 [] 
 
 
@@ -112,7 +122,7 @@ Replacement command to run in packet sniffer. Ping also shown on the right termi
 
 
 
-### 4. []
+### 4. [Write the difference between signature-based vs anomaly-based detection.]
 
 
 #Command
