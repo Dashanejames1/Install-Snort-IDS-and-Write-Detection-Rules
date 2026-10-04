@@ -66,9 +66,11 @@ For this task ...
 # Output
 
 <img width="323" height="255" alt="Screenshot 2026-09-29 223543" src="https://github.com/user-attachments/assets/16bc749e-2bfd-4e87-b508-7a3769f381a4" />
+
 installing snort
 
 <img width="325" height="52" alt="Screenshot 2026-09-29 225951" src="https://github.com/user-attachments/assets/77bdd274-cc89-425e-a09e-c0bb780c92c4" />
+
 attempting to run in packet sniffer mode failed.
 
 <img width="652" height="254" alt="Screenshot 2026-09-29 231007" src="https://github.com/user-attachments/assets/9092b1ed-09aa-4144-b759-5864d23460f8" />
