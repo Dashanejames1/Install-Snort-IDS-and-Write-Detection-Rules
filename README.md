@@ -96,23 +96,69 @@ Packet statistics after stopping Snort. 273 packets captured with 0 drops; 255(9
 ### 2. [Write a rule to detect ICMP from metasploitable to kali.]
 []
 
-# Command used
-[]
+# Commands used
+nano ~/local.rules
+alert icmp 192.168.79.130 any -> 192.168.79.129 any (msg:"ICMP from Metasploitable to Kali"; itype:8; sid:1000001; rev:1;)
 
 
 # Output
 
+<img width="321" height="32" alt="Screenshot 2026-10-05 124833" src="https://github.com/user-attachments/assets/49aa59b6-6824-4aab-8670-ce7f512852fb" />
 
+Running nano command to create a rule.
 
+<img width="323" height="260" alt="Screenshot 2026-10-05 124734" src="https://github.com/user-attachments/assets/4b09c249-bc3d-408c-bfd3-cbfc12360154" />
+
+Rule created to detect ICMP from the target to the host (1/2)
+
+<img width="323" height="256" alt="Screenshot 2026-10-05 124807" src="https://github.com/user-attachments/assets/f8d6c4b7-a19f-42e7-8e28-0fe8e31b071f" />
+
+Rule created to detect ICMP from the target to the host (2/2)
+* itype:8 matches only ping requests, and custom rule IDs (sid) start at 1,000,000 *
+* 
 **Findings:**
-0
+
+
+
+
 ### 3. [Test by pinging from Metasploitable and watching Snort alert.]
 [] 
 
 
 # Command used
-[]
+
+sudo snort -i eth0 -v -c /etc/snort/snort.conf
+
+sudo snort -c /etc/snort/snort.lua -R ~/local.rules -i eth0 -A alert_fast
+
+ping -c 5 192.168.179.129
+
+
 # Output
+
+First, Pinging Kali (192.168.79.129) from Metasploitable to trigger the Snort ICMP detection rule — 5 packets transmitted, 5 received, 0% packet loss. These 5 ping packets are exactly what generated the 5 'ICMP from Metasploitable to Kali' alerts visible in the Snort console, confirming the detection rule fired on real traffic between the two lab machines
+
+Snort custom ICMP rule firing in real time — 5 alerts generated showing 'ICMP from Metasploitable to Kali' with source IP 192.168.79.130 → destination 192.168.79.129, timestamps, and rule ID 1:1000001:1. Packet statistics confirm 1,568 total packets analyzed with 385 ICMP packets captured (24.5% of total traffic).
+
+Snort module statistics showing the detection engine processed 1,568 packets, generated exactly 5 alerts (matching the 5 ICMP alerts seen in the console), and logged all 5. The ips_actions section confirms 5 alert actions were taken — one for each ping detected from Metasploitable. The port_scan module also tracked 1,485 packets across 28 trackers, showing Snort was actively analyzing traffic beyond just ICMP.
+
+Snort session tracking statistics — 12 ICMP sessions tracked via stream_icmp, 267 total network flows monitored, and application identification running across all traffic. This confirms Snort was performing deep packet inspection and session tracking throughout the test, not just simple packet counting.
+
+<img width="362" height="119" alt="Screenshot 2026-10-06 121341" src="https://github.com/user-attachments/assets/1c3c3b33-4a80-4dce-a5a9-b81cd342e50e" />
+
+Pinging Kali (192.168.79.129) from Metasploitable to trigger the Snort ICMP detection rule.
+
+<img width="416" height="390" alt="Screenshot 2026-10-06 122712" src="https://github.com/user-attachments/assets/e82745b8-c7be-4cfa-83df-a1f83c174460" />
+
+Alerts firing + Packet Statistics
+
+<img width="224" height="398" alt="Screenshot 2026-10-06 122742" src="https://github.com/user-attachments/assets/4a646988-7d1e-49d1-9815-00458db05bb1" />
+
+Module Statistics
+
+<img width="419" height="395" alt="Screenshot 2026-10-06 122829" src="https://github.com/user-attachments/assets/120b91e0-9c9b-47f1-a037-d075f911c4bb" />
+
+Stream and Appid Statistics
 
 2
 ```
@@ -123,23 +169,27 @@ Packet statistics after stopping Snort. 273 packets captured with 0 drops; 255(9
 
 
 
-### 4. [Write the difference between signature-based vs anomaly-based detection.]
+### 4. Write the difference between signature-based vs anomaly-based detection.
 
 
-#Command
-[]
+### Output
 
-# Output
+Signature-based detection (used by Snort) works by matching network traffic against a database of known attack patterns — similar to how antivirus works. It's fast, reliable, and generates few false positives, but it can only detect threats it has a signature for it. Zero-day attacks and new malware will pass through undetected since no signature exists yet.
+
+Anomaly-based detection works differently — it learns what 'normal' network behavior looks like and alerts on anything that deviates from that baseline, even if no known signature exists. This makes it effective against zero-days and novel attacks, but it generates significantly more false positives since any unusual but legitimate activity can trigger an alert.
+
+The key difference is signature-based = low false positives on known threats, misses unknowns. Anomaly-based = catches unknowns, more noise. In practice, most enterprise SOC environments use both together for maximum coverage.
+
 .
 
 
-** Final Findings:** 
+** Final Findings:**
 
-### 5. []
+Module Statistics — shows which Snort detection modules were active and how many searches they performed. Proves the detection engine was actually working, not just running idle.
 
-For this task
+Summary Statistics — shows the overall session totals including how many alerts were generated. This is the most important closing number — it will show exactly how many ICMP alerts your rule fired during the test.
 
-### Output
+
 
 Port / Service / Vulnerability / NSE Script / Severity / Notes
 
