@@ -4,14 +4,14 @@
 **Author:** Dashane James  
 **Lab Environment:** VMware Workstation | Kali Linux | Metasploitable 2
 
-**Purpose:** [Install Snort 3, write a custom detection rule for ICMP traffic, and confirm it alerts on live traffic.]
+**Purpose:** Install Snort 3, write a custom detection rule for ICMP traffic, and confirm it alerts on live traffic.
 **Status:** 🔵 Completed
 
 ---
 
 ## 📋 Overview
 
-[This repository documents installing Snort 3 on Kali Linux and using it as an intrusion detection system in an isolated VMware lab. I first ran Snort as a packet sniffer to confirm it could see traffic on the lab interface, then wrote a custom rule to alert on ICMP echo requests sent from Metasploitable 2 to Kali. Pinging Kali from the target generated five alerts for five packets, confirming the rule fired on live traffic. The lab closes with a comparison of signature-based and anomaly-based detection.]
+This repository documents installing Snort 3 on Kali Linux and using it as an intrusion detection system in an isolated VMware lab. I first ran Snort as a packet sniffer to confirm it could see traffic on the lab interface, then wrote a custom rule to alert on ICMP echo requests sent from Metasploitable 2 to Kali. Pinging Kali from the target generated five alerts for five packets, confirming the rule fired on live traffic. The lab closes with a comparison of signature-based and anomaly-based detection.
 
 ---
 
@@ -40,13 +40,13 @@
 
 ## 🔬 Tasks / Assessments Performed
 
-### 1. [Install Snort and run in packet sniffer mode first.]
+### 1. Install Snort and run in packet sniffer mode first.
 
 Before writing any rules, I installed Snort and ran it as a plain packet sniffer to confirm it could see traffic on the lab interface. I pinged Metasploitable from Kali while Snort listened on `eth0`.
 
 # Commands used
-[sudo apt install snort - y]
-[sudo snort -i eth0 -A console -q]
+sudo apt install snort - y
+sudo snort -i eth0 -A console -q
 
 
 # Output
@@ -78,8 +78,8 @@ Packet statistics after stopping Snort. 273 packets captured with 0 drops; 255(9
 
 
 
-### 2. [Write a rule to detect ICMP from metasploitable to kali.]
-[With visibility confirmed, I wrote a custom rule that alerts whenever Metasploitable pings Kali. The rule lives in its own file so it stays separate from Snort's default configuration.]
+### 2. Write a rule to detect ICMP from metasploitable to kali.
+With visibility confirmed, I wrote a custom rule that alerts whenever Metasploitable pings Kali. The rule lives in its own file so it stays separate from Snort's default configuration.
 
 # Commands used
 
@@ -124,7 +124,7 @@ The rule is deliberately narrow. It matches one direction, one source, one desti
 
 
 
-### 3. [Test by pinging from Metasploitable and watching Snort alert.]
+### 3. Test by pinging from Metasploitable and watching Snort alert.
 
 To test the rule, I started Snort with the rule file loaded and sent five pings from Metasploitable to Kali.
 
@@ -203,31 +203,7 @@ Summary Statistics — shows the overall session totals including how many alert
 
 Port / Service / Vulnerability / NSE Script / Severity / Notes
 
-21/tcp (FTP) - ftp-vsftpd-backdoor (CVE-2011-2523)	🔴 Critical	Live exploitation confirmed. The vulnerable vsFTPd 2.3.4 backdoor allowed remote command execution and root shell access. (CVSS 9.8)
 
-22/tcp (SSH) - Weak SSH cryptographic configuration - 🟡 Medium	Weak or outdated cryptographic algorithms were identified, potentially reducing the security of encrypted communications.
-
-23/tcp (Telnet) - Telnet service detected	🟠 High	Telnet transmits credentials in plaintext, making usernames and passwords susceptible to interception.
-
-80/tcp (HTTP) - Slowloris Denial-of-Service	🟡 Medium	The web server appears susceptible to the Slowloris DoS attack, which can exhaust server connections and deny service to legitimate users.
-
-80/tcp (HTTP) - HTTP TRACE method enabled	🟢 Low	TRACE is enabled, which may aid reconnaissance or cross-site tracing attacks but does not directly compromise the server.
-
-80/tcp (HTTP) - SQL Injection vulnerability	🟠 High	SQL injection was detected and could allow attackers to retrieve, modify, or delete database information.
-
-111/tcp (rpcbind) - RPC information disclosure	🟢 Low	rpcbind exposes information about available RPC services, assisting attacker reconnaissance.
-
-139/tcp (NetBIOS/SMB) - SMB enumeration	🟡 Medium	SMB information disclosure allows attackers to gather host and share information useful for later attacks.
-
-445/tcp (SMB) - smb-vuln-ms10-061 🟢 Not Vulnerable	NSE script returned false, indicating the system is not vulnerable to MS10-061.
-
-445/tcp (SMB) - smb-vuln-ms10-054 🟢 Not Vulnerable	NSE script returned false, indicating the target is not affected by MS10-054.
-
-445/tcp (SMB) - smb-vuln-regsvc-dos	⚪ Inconclusive	The script failed to complete successfully, so the vulnerability status could not be determined.
-
-3306/tcp (MySQL) - MySQL information disclosure	🟡 Medium	Database version and service information were exposed, which may help attackers identify known exploits.
-
-443/tcp (HTTPS) - Logjam (Weak Diffie-Hellman Parameters) 🟡 Medium	Weak Diffie-Hellman parameters reduce TLS security and could allow encrypted communications to be weakened under certain attack scenarios
 
 **Findings:** 
 
@@ -250,16 +226,6 @@ The table above consolidates all of the findings reported during the Nmap --scri
 | ICMP echo requests from one host to another | Discovery | T1018 | Remote System Discovery |
 
 ---
-
-## 📚 CySA+ Exam Relevance
-
-This lab maps to the following CompTIA CySA+ (CS0-003) exam domains:
-
-| Domain | Coverage |
-|---|---|
-| Security Operations (33%) | Deploying an IDS, writing a detection rule, and analyzing alerts and network traffic statistics |
-| Incident Response (20%) | Detection and analysis: confirming that suspicious traffic generates an alert that identifies source and destination |
-| Reporting & Communication (17%) | Documenting the setup, rule logic, and test results in a structured, readable format |
 
 ---
 
@@ -289,14 +255,10 @@ sudo snort -c /etc/snort/snort.lua -R ~/local.rules -i eth0 -A alert_fast
 
 ## 📌 About This Project
 
-This is the first defensive lab in my cybersecurity portfolio. The earlier repositories focused on scanning and capturing traffic from the attacker's side; this one moves to the analyst's side by detecting traffic and alerting on it, which is the work I'm aiming for as a cybersecurity analyst.
+
 
 **Related repositories:**
-- Nmap-Host-Discovery-and-Lab-Baseline — Established a baseline of the lab network using ping sweeps and host discovery
-- Nmap-Scan-Types-SYN-vs-TCP-vs-UDP — Compared SYN, TCP connect, and UDP scan types for speed, stealth, and reliability
-- Service-Version-Detection-and-OS-Fingerprinting — Identified exact software versions on Metasploitable and researched the CVEs tied to them
-- Wireshark-Capture-and-Analyze-Traffic — Captured and analyzed live packet traffic, including plaintext credential exposure over Telnet
-- TCPDump-CLI-Packet-Capture — Captured traffic from the command line and saved it to a `.pcap` file for analysis in Wireshark
+
 
 ---
 
